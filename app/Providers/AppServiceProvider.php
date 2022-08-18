@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Http;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+      Http::macro('swapi', function () {
+          return Http::withHeaders([
+              'X-Example' => 'example',
+        ])->baseUrl(config('services.starwars.base_uri'));
+      });
+
+      \Artisan::call('data:get');
+    }
+}
